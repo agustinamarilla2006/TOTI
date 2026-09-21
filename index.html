@@ -109,7 +109,7 @@
             overflow: visible;
         }
 
-        /* Flores Silvestres en el Pasto (Primavera) */
+        /* Flores Silvestres en el Pasto */
         .flores-pasto-container {
             position: absolute;
             top: -25px;
@@ -191,7 +191,7 @@
             bottom: 6%;
             left: 50%;
             transform: translateX(-50%);
-            transition: left 1.5s cubic-bezier(0.65, 0, 0.35, 1);
+            transition: all 1.5s cubic-bezier(0.65, 0, 0.35, 1);
             z-index: 2;
         }
 
@@ -329,13 +329,29 @@
             100% { transform: translateY(105vh) rotate(360deg) translateX(-50px); opacity: 0; }
         }
 
+        /* Adaptación para Celulares */
         @media (max-width: 768px) {
-            .arbol-container.desplazado { left: 50%; opacity: 0.25; }
-            .carta-container { width: 88%; left: 6%; top: 10%; padding: 20px; }
-            .titulo-carta { font-size: 1.1rem; }
-            .cuerpo-carta { font-size: 0.9rem; }
-            .pie-carta { font-size: 1.4rem; }
-            .sol { width: 70px; height: 70px; right: 20px; top: 20px; }
+            .arbol-container {
+                transform: translateX(-50%) scale(0.8);
+                transform-origin: bottom center;
+            }
+            .arbol-container.desplazado {
+                left: 50%;
+                opacity: 0.95;
+            }
+            .carta-container {
+                width: 90%;
+                left: 5%;
+                top: 4%;
+                padding: 16px;
+                background: rgba(255, 255, 255, 0.75);
+                backdrop-filter: blur(4px);
+                z-index: 30;
+            }
+            .titulo-carta { font-size: 1rem; margin-bottom: 10px; }
+            .cuerpo-carta { font-size: 0.8rem; line-height: 1.4; min-height: auto; }
+            .pie-carta { font-size: 1.2rem; margin-top: 12px; padding-top: 8px; }
+            .sol { width: 60px; height: 60px; right: 15px; top: 15px; }
         }
     </style>
 </head>
@@ -389,7 +405,7 @@
         let interactivoHabilitado = false;
 
         generarFloresEnPasto();
-        setInterval(crearHojaCaida, 800); // Intervalo más ligero para móviles
+        setInterval(crearHojaCaida, 800);
 
         function generarFloresEnPasto() {
             const contenedor = document.getElementById('floresPasto');
@@ -530,7 +546,6 @@
             dibujar();
         }
 
-        // Cantidad óptima de flores para fluidez móvil (200 flores)
         function crearCopaAltisima() {
             const contenedor = document.getElementById('floresCorazon');
             const totalFlores = 200; 
