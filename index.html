@@ -14,7 +14,6 @@
         }
 
         body {
-            /* Cielo despejado e iluminado */
             background: linear-gradient(180deg, #87ceeb 0%, #b0e0e6 45%, #e0f6ff 70%, #d4f1f9 100%);
             font-family: 'Montserrat', sans-serif;
             min-height: 100vh;
@@ -230,6 +229,7 @@
             cursor: pointer;
             pointer-events: auto;
             transition: transform 0.3s ease;
+            will-change: transform;
         }
 
         .flor-item:hover {
@@ -254,7 +254,7 @@
             transform: translateY(20px);
             transition: all 1.2s ease;
             pointer-events: none;
-            background: rgba(255, 255, 255, 0.82);
+            background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(8px);
             padding: 30px;
             border-radius: 20px;
@@ -320,7 +320,7 @@
             pointer-events: none;
             font-size: 1.3rem;
             opacity: 0.85;
-            animation: caidaHoja linear infinite;
+            animation: caidaHoja linear forwards;
         }
 
         @keyframes caidaHoja {
@@ -331,7 +331,7 @@
 
         @media (max-width: 768px) {
             .arbol-container.desplazado { left: 50%; opacity: 0.25; }
-            .carta-container { width: 88%; left: 6%; top: 10%; }
+            .carta-container { width: 88%; left: 6%; top: 10%; padding: 20px; }
             .titulo-carta { font-size: 1.1rem; }
             .cuerpo-carta { font-size: 0.9rem; }
             .pie-carta { font-size: 1.4rem; }
@@ -349,18 +349,15 @@
     <!-- Fondo de Parque / Pasto -->
     <div class="colinas-fondo"></div>
     <div class="suelo-cesped">
-        <!-- Flores sembradas en el pasto por la primavera -->
         <div class="flores-pasto-container" id="floresPasto"></div>
     </div>
 
     <div class="escena" id="escena">
-        <!-- Botón de Inicio -->
         <button class="semilla-btn" id="btnInicio" onclick="iniciarAnimacion(event)">
             <span class="semilla-icon">🌻</span>
             <span class="semilla-texto">Para Trinidad ❤️ (Click Aquí)</span>
         </button>
 
-        <!-- Carta -->
         <div class="carta-container" id="carta">
             <div class="titulo-carta">
                 <span>🌻</span> <span id="txtTitulo"></span> <span>🌻</span>
@@ -371,7 +368,6 @@
             <div class="pie-carta" id="txtPie"></div>
         </div>
 
-        <!-- Árbol -->
         <div class="arbol-container" id="arbolContainer">
             <canvas id="canvasArbol" width="620" height="850"></canvas>
             <div class="flores-corazon" id="floresCorazon"></div>
@@ -379,9 +375,6 @@
     </div>
 
     <script>
-        /* ===================================================
-           TEXTOS PERSONALIZADOS:
-        =================================================== */
         const TEXTO_TITULO = "FELIZ DÍA DE LAS FLORES AMARILLAS MYLOVEEEEE 💛";
         
         const LINEAS_CARTA = [
@@ -390,32 +383,26 @@
         ];
 
         const TEXTO_PIE = "Para mi totiiii, ya que estas de viaje al menos te las mando por aca y cuando nos veamos te doy las posta. Te amo hermosa mia";
-        /* =================================================== */
 
         const canvas = document.getElementById('canvasArbol');
         const ctx = canvas.getContext('2d');
         let interactivoHabilitado = false;
 
-        // Generar las flores del pasto al cargar la página
         generarFloresEnPasto();
-        setInterval(crearHojaCaida, 250);
+        setInterval(crearHojaCaida, 800); // Intervalo más ligero para móviles
 
         function generarFloresEnPasto() {
             const contenedor = document.getElementById('floresPasto');
             const tiposFlores = ['🌻', '🌼', '🌷', '🌸', '🌹', '🌺', '🪻', '🌻', '🌼'];
-            const cantidad = 45; // Cantidad de florecitas dispersas en el pasto
+            const cantidad = 25; 
 
             for (let i = 0; i < cantidad; i++) {
                 const flor = document.createElement('span');
                 flor.classList.add('flor-pasto');
                 flor.innerText = tiposFlores[Math.floor(Math.random() * tiposFlores.length)];
-                
-                // Ubicación aleatoria sobre el margen superior del suelo
-                flor.style.left = Math.random() * 98 + 'vw';
-                flor.style.top = (Math.random() * 30 - 15) + 'px';
-                
-                // Variación de tamaño y retraso de animación para mayor dinamismo
-                flor.style.fontSize = (Math.random() * 0.6 + 0.9) + 'rem';
+                flor.style.left = Math.random() * 95 + 'vw';
+                flor.style.top = (Math.random() * 25 - 10) + 'px';
+                flor.style.fontSize = (Math.random() * 0.4 + 0.8) + 'rem';
                 flor.style.animationDelay = (Math.random() * 2) + 's';
                 flor.style.animationDuration = (Math.random() * 2 + 2) + 's';
 
@@ -434,13 +421,11 @@
             });
         }
 
-        // Dibuja el árbol y el tallado integrado a lo largo del tronco
         function animarArbol(callback) {
             let progreso = 0;
 
             function dibujar() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
                 const p = Math.min(progreso, 1);
 
                 ctx.strokeStyle = '#2d1e18';
@@ -459,14 +444,14 @@
                 ctx.lineWidth = 18 * p;
                 ctx.stroke();
 
-                // Tronco Principal Curvo y Robusto
+                // Tronco
                 ctx.beginPath();
                 ctx.moveTo(310, 820);
                 ctx.quadraticCurveTo(285, 520, 310, 220);
                 ctx.lineWidth = 48 * (1 - (1 - p) * 0.2);
                 ctx.stroke();
 
-                // Veta interior de corteza
+                // Veta interior
                 ctx.beginPath();
                 ctx.moveTo(310, 810);
                 ctx.quadraticCurveTo(290, 520, 310, 220);
@@ -475,12 +460,10 @@
                 ctx.stroke();
                 ctx.strokeStyle = '#2d1e18';
 
-                // --- NOMBRE "TRINIDAD" TALLADO A LO LARGO DEL TRONCO ---
+                // TRINIDAD Tallado
                 if (progreso > 0.35) {
                     let opacidad = Math.min((progreso - 0.35) * 2, 1);
                     const letras = "TRINIDAD".split("");
-                    
-                    // Puntos a lo largo de la curvatura del tronco
                     const posicionesY = [680, 630, 580, 530, 480, 430, 380, 330];
                     const desviacionesX = [303, 298, 295, 294, 296, 300, 304, 308];
 
@@ -493,11 +476,9 @@
                         let x = desviacionesX[i];
                         let y = posicionesY[i];
 
-                        // Sombra grabada hacia adentro (Profundidad en madera)
                         ctx.fillStyle = 'rgba(15, 8, 5, 0.9)';
                         ctx.fillText(letra, x + 1, y + 2);
 
-                        // Veta clara tallada
                         ctx.fillStyle = '#f3c283';
                         ctx.fillText(letra, x, y);
                     });
@@ -539,7 +520,7 @@
                     ctx.stroke();
                 }
 
-                progreso += 0.022;
+                progreso += 0.03;
                 if (progreso <= 1) {
                     requestAnimationFrame(dibujar);
                 } else {
@@ -549,10 +530,10 @@
             dibujar();
         }
 
-        // Copa llena y masiva de flores amarillas
+        // Cantidad óptima de flores para fluidez móvil (200 flores)
         function crearCopaAltisima() {
             const contenedor = document.getElementById('floresCorazon');
-            const totalFlores = 750;
+            const totalFlores = 200; 
             let creadas = 0;
 
             const intervalo = setInterval(() => {
@@ -574,24 +555,24 @@
 
                 flor.onclick = (e) => {
                     e.stopPropagation();
-                    crearExplosionParticulas(e.clientX, e.clientY, ['✨', 'Trinidad 💛', '🌻', '✨']);
+                    crearExplosionParticulas(e.clientX, e.clientY, ['✨', 'Trinidad 💛', '🌻']);
                 };
 
                 contenedor.appendChild(flor);
                 creadas++;
-            }, 3);
+            }, 8);
         }
 
         function obtenerCoordenadasCopa() {
             const centros = [
-                { x: 310, y: 80,  r: 130 },
-                { x: 210, y: 130, r: 135 },
-                { x: 410, y: 130, r: 135 },
-                { x: 120, y: 240, r: 120 },
-                { x: 500, y: 230, r: 120 },
-                { x: 310, y: 220, r: 160 },
-                { x: 220, y: 320, r: 110 },
-                { x: 400, y: 310, r: 110 }
+                { x: 310, y: 80,  r: 120 },
+                { x: 210, y: 130, r: 120 },
+                { x: 410, y: 130, r: 120 },
+                { x: 120, y: 240, r: 110 },
+                { x: 500, y: 230, r: 110 },
+                { x: 310, y: 220, r: 140 },
+                { x: 220, y: 320, r: 100 },
+                { x: 400, y: 310, r: 100 }
             ];
 
             const c = centros[Math.floor(Math.random() * centros.length)];
@@ -613,8 +594,8 @@
                     document.getElementById('txtTitulo').innerText = TEXTO_TITULO;
                     document.getElementById('txtPie').innerText = TEXTO_PIE;
                     escribirTextoLento();
-                }, 1000);
-            }, 600);
+                }, 800);
+            }, 400);
         }
 
         function escribirTextoLento() {
@@ -647,11 +628,11 @@
 
         document.addEventListener('click', (e) => {
             if (!interactivoHabilitado) return;
-            crearExplosionParticulas(e.clientX, e.clientY, ['🌻', 'Trinidad 💛', '✨', '🌼', '🍃']);
+            crearExplosionParticulas(e.clientX, e.clientY, ['🌻', 'Trinidad 💛', '✨', '🌼']);
         });
 
         function crearExplosionParticulas(x, y, elementos) {
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 6; i++) {
                 const p = document.createElement('div');
                 p.classList.add('efecto-clic');
                 p.innerText = elementos[Math.floor(Math.random() * elementos.length)];
@@ -659,25 +640,25 @@
                 p.style.top = y + 'px';
 
                 let angle = Math.random() * Math.PI * 2;
-                let dist = Math.random() * 90 + 30;
+                let dist = Math.random() * 60 + 20;
                 p.style.setProperty('--dx', `${Math.cos(angle) * dist}px`);
                 p.style.setProperty('--dy', `${Math.sin(angle) * dist}px`);
 
                 document.body.appendChild(p);
-                setTimeout(() => p.remove(), 1200);
+                setTimeout(() => p.remove(), 1000);
             }
         }
 
         function crearHojaCaida() {
             const hoja = document.createElement('div');
             hoja.classList.add('hoja-caida');
-            const elementos = ['🍃', '🌿', '🌻', '🌼', '✨', '💛'];
+            const elementos = ['🍃', '🌿', '🌻', '🌼', '💛'];
             hoja.innerText = elementos[Math.floor(Math.random() * elementos.length)];
-            hoja.style.left = Math.random() * 100 + 'vw';
+            hoja.style.left = Math.random() * 95 + 'vw';
             
-            const duracion = Math.random() * 4 + 5;
+            const duracion = Math.random() * 3 + 5;
             hoja.style.animationDuration = duracion + 's';
-            hoja.style.fontSize = (Math.random() * 0.8 + 0.8) + 'rem';
+            hoja.style.fontSize = (Math.random() * 0.6 + 0.8) + 'rem';
 
             document.body.appendChild(hoja);
             setTimeout(() => hoja.remove(), duracion * 1000);
