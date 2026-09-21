@@ -371,7 +371,7 @@
     <div class="escena" id="escena">
         <button class="semilla-btn" id="btnInicio" onclick="iniciarAnimacion(event)">
             <span class="semilla-icon">🌻</span>
-            <span class="semilla-texto">Para Trinidad ❤️ (Click Aquí)</span>
+            <span class="semilla-texto">Para mi coque ❤️ (Click Aquí)</span>
         </button>
 
         <div class="carta-container" id="carta">
@@ -476,16 +476,16 @@
                 ctx.stroke();
                 ctx.strokeStyle = '#2d1e18';
 
-                // TRINIDAD Tallado
+                // TRINI Tallado
                 if (progreso > 0.35) {
                     let opacidad = Math.min((progreso - 0.35) * 2, 1);
-                    const letras = "TRINIDAD".split("");
-                    const posicionesY = [680, 630, 580, 530, 480, 430, 380, 330];
-                    const desviacionesX = [303, 298, 295, 294, 296, 300, 304, 308];
+                    const letras = "TRINI".split("");
+                    const posicionesY = [610, 560, 510, 460, 410];
+                    const desviacionesX = [298, 295, 294, 296, 300];
 
                     ctx.save();
                     ctx.globalAlpha = opacidad;
-                    ctx.font = '700 24px "Dancing Script", cursive';
+                    ctx.font = '700 28px "Dancing Script", cursive';
                     ctx.textAlign = 'center';
 
                     letras.forEach((letra, i) => {
@@ -570,7 +570,7 @@
 
                 flor.onclick = (e) => {
                     e.stopPropagation();
-                    crearExplosionParticulas(e.clientX, e.clientY, ['✨', 'Trinidad 💛', '🌻']);
+                    crearExplosionParticulas(e.clientX, e.clientY, ['✨', 'Trini 💛', '🌻']);
                 };
 
                 contenedor.appendChild(flor);
@@ -643,7 +643,7 @@
 
         document.addEventListener('click', (e) => {
             if (!interactivoHabilitado) return;
-            crearExplosionParticulas(e.clientX, e.clientY, ['🌻', 'Trinidad 💛', '✨', '🌼']);
+            crearExplosionParticulas(e.clientX, e.clientY, ['🌻', 'Trini 💛', '✨', '🌼']);
         });
 
         function crearExplosionParticulas(x, y, elementos) {
